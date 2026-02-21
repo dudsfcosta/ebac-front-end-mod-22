@@ -1,0 +1,30 @@
+export const filmes = [
+
+    {
+        id: 1,
+        title: 'Chef (2014)',
+        image: 'https://placehold.co/300x400?text=Chef',
+        description: 'Um chef deixa o restaurante para abrir um food truck.',
+    },
+
+    {
+        id: 2,
+        title: 'Ratatouille (2007) ',
+        image: 'https://placehold.co/300x400?text=Ratatouille',
+        description: 'Um rato sonha em se tornar um grande chef em Paris.',
+    },
+
+    {
+        id: 3,
+        title: 'Julie & Julia (2009)',
+        image: 'https://placehold.co/300x400?text=Julie+%26Julia',
+        description: 'Uma blogueira recria as receitas da chef Julia Child.',
+    },
+
+    {
+        id: 4,
+        title: 'Burnt (2015)',
+        image: 'https://placehold.co/300x400?text=Burnt',
+        description: 'um chef problemático tenta recomeçar sua carreira.',
+    },
+];
