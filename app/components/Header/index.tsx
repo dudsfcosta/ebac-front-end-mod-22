@@ -6,10 +6,10 @@ const Header = () => {
     return(
         <header className={styles.header}>
             <div className={styles.header__container}>
-                <Link href="/">
-                    <h1>Cinelista</h1>
-                </Link>
-                <nav>
+                <h1 className={styles.header__logo}>
+                    <Link href="/">Cinelista</Link>
+                </h1>
+                <nav className={styles.header__nav}>
                     <Link href="/">Início</Link>
                     <Link href="/filmes/em-alta">Em alta</Link>
                     <Link href="/filmes/populares">Populares</Link>
