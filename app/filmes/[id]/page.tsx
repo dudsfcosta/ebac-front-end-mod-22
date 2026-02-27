@@ -1,21 +1,21 @@
-import {filmes} from "@/filmes";
 import Link from "next/link";
 import styles from "./DetalheFilme.module.css"
+import {getMovieDetails} from "@/lib/api/tmdb";
 
 type Props = {
     params : Promise<{
         id: number
         title: string
-        image: string
-        description: string
+        poster_path: string
+        overview: string
     }>
 }
 
 const DetalheFilme = async ({params} : Props) => {
     const { id } = await params;
-    const details = filmes.find(filme => filme.id == id);
+    const details = await getMovieDetails(id);
     // @ts-expect-error IDE finds error, but code works properly
-    const {title, image, description} = details;
+    const {title, poster_path, overview} = details;
 
     return (
      <>
@@ -24,11 +24,13 @@ const DetalheFilme = async ({params} : Props) => {
                 <Link className={styles.detalhes__voltar} href={`/`}>Voltar</Link>
                 <section>
                     <figure>
-                        <img className={styles.detalhes__image} src={image} alt={`imagem do filme "${title}"`} />
+                        <img className={styles.detalhes__image}
+                             src={`${process.env.NEXT_PUBLIC_TMDB_API_IMG_URL}${poster_path}`}
+                             alt={`imagem do filme "${title}"`} />
                     </figure>
                     <article className={styles.detalhes__info}>
                         <h2>{title}</h2>
-                        <p>{description}</p>
+                        <p>{overview}</p>
                     </article>
                 </section>
              </div>

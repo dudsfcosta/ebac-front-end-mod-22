@@ -1,10 +1,14 @@
 import Title from "@/app/components/Title"
+import {getNowPlaying} from "@/lib/api/tmdb";
+import Grid from "@/app/components/Grid";
 
-const FilmesEmAlta = () => {
+const FilmesEmAlta = async () => {
 
+    const filmes = await getNowPlaying();
     return (
         <>
-        <Title title="Filmes Em Alta"/>
+            <Title title="Trending"/>
+            <Grid filmes={filmes}/>
         </>
     )
 }

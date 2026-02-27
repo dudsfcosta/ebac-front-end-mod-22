@@ -1,12 +1,16 @@
 import Title from "@/app/components/Title"
+import {getPopularMovies} from "@/lib/api/tmdb";
+import Grid from "@/app/components/Grid";
 
-const FilmesEmAlta = () => {
+const FilmesPopulares = async () => {
 
+    const filmes = await getPopularMovies();
     return (
         <>
-        <Title title="Populares"/>
+            <Title title="Popular"/>
+            <Grid filmes={filmes}/>
         </>
     )
 }
 
-export default FilmesEmAlta;
+export default FilmesPopulares;

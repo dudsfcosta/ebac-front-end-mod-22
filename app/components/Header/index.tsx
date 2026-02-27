@@ -10,10 +10,10 @@ const Header = () => {
                     <Link href="/">Cinelista</Link>
                 </h1>
                 <nav className={styles.header__nav}>
-                    <Link href="/">Início</Link>
-                    <Link href="/filmes/em-alta">Em alta</Link>
-                    <Link href="/filmes/populares">Populares</Link>
-                    <Link href="/filmes/top-filmes">Top Filmes</Link>
+                    <Link href="/">Home</Link>
+                    <Link href="/filmes/em-alta">Trending</Link>
+                    <Link href="/filmes/populares">Popular</Link>
+                    <Link href="/filmes/top-filmes">Top Movies</Link>
                 </nav>
             </div>
         </header>
