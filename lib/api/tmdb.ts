@@ -8,6 +8,6 @@ type Data = {
 }
 export const getTrendingMovies = async () => {
 
-    const res = await tmdbApi.get<Data>("/trending/movie/week?language=pt-BR");
+    const res = await tmdbApi.get<Data>("/trending/movie/week");
     return res.data.results;
 }
