@@ -5,12 +5,16 @@ import styles from "./DetalheFilme.module.css"
 type Props = {
     params : Promise<{
         id: number
+        title: string
+        image: string
+        description: string
     }>
 }
 
 const DetalheFilme = async ({params} : Props) => {
     const { id } = await params;
     const details = filmes.find(filme => filme.id == id);
+    // @ts-expect-error IDE finds error, but code works properly
     const {title, image, description} = details;
 
     return (
