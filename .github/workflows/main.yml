@@ -1,4 +1,4 @@
-# Nome do workflow. aparece na
+# Nome do workflow. aparece na aba Actions do GitHub
 name: Pipeline CI/CD
 
 # Definir quando o pipeline será disparado
@@ -6,10 +6,41 @@ on:
   push:
     branches:
       - master
-
+  pull_request: # Boa prática: rodar também em PRs para a master
+    branches:
+      - master
   workflow_dispatch: # habilitar o botão "Run workflow" no GitHub Actions
-jobs :
+
+jobs:
+  # ----------------------------------------------------
+  # 1. JOB DE LINTING
+  # ----------------------------------------------------
+  lint:
+    name: Run ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Instalação do Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+
+      - name: Instalação das dependências
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+  # ----------------------------------------------------
+  # 2. JOB DE BUILD
+  # ----------------------------------------------------
   build:
+    name: Build Project
+    needs: lint # Faz o build aguardar o lint. Se o lint falhar, o build é cancelado
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do código
@@ -20,14 +51,14 @@ jobs :
         with:
           node-version: '20'
           cache: "npm"
-          cache-dependecy-path: package-lock.json
+          cache-dependency-path: package-lock.json
           
       - name: Instalação das dependências
-        run: npm install
+        run: npm ci
         
       - name: Rodar o build
         run: npm run build
         env:
-          TMDB_API_URL: ${{ vars.TMDB_API_URL}}
-          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY}}
-          NEXT_PUBLIC_TMDB_API_IMG_URL: ${{ vars.NEXT_PUBLIC_TMDB_API_IMG_URL}}
+          TMDB_API_URL: ${{ vars.TMDB_API_URL }}
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+          NEXT_PUBLIC_TMDB_API_IMG_URL: ${{ vars.NEXT_PUBLIC_TMDB_API_IMG_URL }}
