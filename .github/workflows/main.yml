@@ -5,11 +5,11 @@ name: Pipeline CI/CD
 on: 
   push:
     branches:
-      - master
-  pull_request: # Boa prática: rodar também em PRs para a master
+      - main
+  pull_request:
     branches:
-      - master
-  workflow_dispatch: # habilitar o botão "Run workflow" no GitHub Actions
+      - main
+  workflow_dispatch:
 
 jobs:
   # ----------------------------------------------------
@@ -36,11 +36,35 @@ jobs:
         run: npm run lint
 
   # ----------------------------------------------------
-  # 2. JOB DE BUILD
+  # 2. JOB DE TESTES
+  # ----------------------------------------------------
+  test:
+    name: Run Tests
+    needs: lint # só roda se o Lint for validado
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Instalação do Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+
+      - name: Instalação das dependências
+        run: npm ci
+
+      - name: Rodar os testes
+        run: npm run test
+
+  # ----------------------------------------------------
+  # 3. JOB DE BUILD
   # ----------------------------------------------------
   build:
     name: Build Project
-    needs: lint # Faz o build aguardar o lint. Se o lint falhar, o build é cancelado
+    needs: test # Aguarda os testes serem validados
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do código
@@ -64,14 +88,13 @@ jobs:
           NEXT_PUBLIC_TMDB_API_IMG_URL: ${{ vars.NEXT_PUBLIC_TMDB_API_IMG_URL }}
 
   # ----------------------------------------------------
-  # 2. JOB DE DEPLOY
+  # 4. JOB DE DEPLOY
   # ----------------------------------------------------
   deploy:
     name: Deploy to Vercel
     needs: build # Só faz deploy se o build compilar corretamente
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-# Apenas faz deploy se for um push direto na branch master (não faz em PRs abertos)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
