@@ -2,7 +2,7 @@ import { describe, expect, it, beforeAll } from '@jest/globals';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import Card from "@/app/components/Card";
-// @ts-ignore
+// @ts-expect-error
 import Filme from "@/types/types";
 
 // 1. Configurando a variável de ambiente antes do teste rodar
